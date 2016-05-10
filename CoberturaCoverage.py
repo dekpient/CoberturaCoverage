@@ -6,8 +6,8 @@ from sublime_plugin import TextCommand
 
 from .lib.parse_reports import parse_files
 
-GOOD_REGION_NAME = 'SublimeCoverage-Good'
-BAD_REGION_NAME = 'SublimeCoverage-Bad'
+GOOD_REGION_NAME = 'CoberturaCoverage-Good'
+BAD_REGION_NAME = 'CoberturaCoverage-Bad'
 FILL = sublime.DRAW_NO_FILL
 settings = None
 
@@ -16,7 +16,7 @@ FILES = {}
 
 def plugin_loaded():
     global settings
-    settings = sublime.load_settings('SublimeCoverage.sublime-settings')
+    settings = sublime.load_settings('CoberturaCoverage.sublime-settings')
 
 
 class BaseCoverage(TextCommand):
@@ -37,11 +37,18 @@ class RemoveCoverageReportCommand(BaseCoverage):
 class LoadCoverageReportCommand(BaseCoverage):
     def run(self, edit):
         files = parse_files(settings.get('coverage_report_locations'))
-        file_name = 'documents/models.py'
-        covered, uncovered = self.filter_lines(files[file_name]['lines'])
-        self.remove_regions(self.view, present=False)
-        self.remove_regions(self.view, present=True)
-        self.highlight_lines(self.view, uncovered, present=False)
+        file_name = self.view.file_name()
+        for loc in settings.get('strip_locations', []):
+            if file_name.startswith(loc):
+                file_name = file_name.replace(loc, '')
+                break
+
+        file_data = files.get(file_name)
+        if file_data:
+            covered, uncovered = self.filter_lines(file_data['lines'])
+            self.remove_regions(self.view, present=False)
+            self.remove_regions(self.view, present=True)
+            self.highlight_lines(self.view, uncovered, present=False)
 
     def filter_lines(self, lines):
         covered, uncovered = [], []
