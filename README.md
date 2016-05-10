@@ -1,1 +1,1 @@
-# SublimeCoverage
+# CobeturaCoverage

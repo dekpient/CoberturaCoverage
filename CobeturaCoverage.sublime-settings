@@ -1,0 +1,8 @@
+{
+  // name of scope for color highlighting; replace with "mark" if "invalid" is annoying
+  "highlight": "mark",
+
+  "coverage_report_locations": [
+    "/Users/jeff.rand/src/website/reports/coverage.xml",
+  ]
+}
