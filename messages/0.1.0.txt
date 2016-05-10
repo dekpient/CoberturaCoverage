@@ -1,0 +1,3 @@
+CoberturaCoverage 0.1.0 Changelog
+
+Created the project to display Corbertura coverage reports in SublimeTexts
