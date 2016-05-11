@@ -74,6 +74,7 @@ class BaseCoverage(object):
 class ToggleCoverageReportCommand(BaseCoverage, TextCommand):
     def run(self, edit):
         settings.set('coverage_on_load', not settings.get('coverage_on_load'))
+        print("Toggling coverage_on_load to %s" % settings.get('coverage_on_load'))
         if settings.get('coverage_on_load'):
             self.render_coverage(self.view)
         else:
@@ -81,6 +82,6 @@ class ToggleCoverageReportCommand(BaseCoverage, TextCommand):
 
 
 class CoverageReportEventListener(BaseCoverage, EventListener):
-    def on_load_async(self, view):
+    def on_activated_async(self, view):
         if settings.get('coverage_on_load'):
             self.render_coverage(view)

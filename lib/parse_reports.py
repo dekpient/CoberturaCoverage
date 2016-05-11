@@ -5,7 +5,6 @@ import xml.etree.ElementTree as ET
 
 
 def parse_reports(report_names, source_files, source_report_mapping, report_mtimes):
-    print(source_files.keys())
     for report_name in report_names:
         try:
             mtime = os.path.getmtime(report_name)
