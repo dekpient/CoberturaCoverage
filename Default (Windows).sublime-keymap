@@ -1,4 +1,3 @@
 [
-  { "keys": ["ctrl+shift+m"], "command": "remove_coverage_report" },
-  { "keys": ["ctrl+shift+n"], "command": "load_coverage_report" }
+  { "keys": ["ctrl+shift+n"], "command": "toggle_coverage_report" }
 ]

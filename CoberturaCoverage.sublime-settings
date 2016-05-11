@@ -1,4 +1,7 @@
 {
+  // Do you want to display this on load?
+  "coverage_on_load": false,
+  // List of report xml files
   "coverage_report_locations": [
   ],
   // A list of locations which to remove from the beginning of a coverage report's filename

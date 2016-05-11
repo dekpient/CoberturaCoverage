@@ -18,6 +18,11 @@ Through [Package Control](https://sublime.wbond.net/packages/Package%20Control) 
 
 `Preferences` > `CoberturaCoverage` > `Settings – User`
 
+* `coverage_on_load` - Display coverage on load, defaults to False
 * `coverage_report_locations` - This is a fully qualified path to your report .xml files
 * `strip_locations` - A list of locations which to remove from the beginning of a coverage report's filename. An example is:
  * I run my coverage reports in /home/jeffrand/tested_code, which may not show up in the coverage report's file names, but will be in my path as its opened in sublime, so I want to strip that location from the file's name
+
+ ## Usage
+
+ The default command for toggling CoberturaCover is `ctrl+shift+n` on Mac

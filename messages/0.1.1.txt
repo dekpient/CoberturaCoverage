@@ -1,0 +1,3 @@
+CoberturaCoverage 0.1.1 Changelog
+
+Add on_load handler, make the shortcuts toggle, fix errors for missing report files

@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+from imp import reload
 
 import sublime
-from sublime_plugin import TextCommand
+from sublime_plugin import (TextCommand, EventListener)
 
-from .lib.parse_reports import parse_files
+from .lib import parse_reports
 
 GOOD_REGION_NAME = 'CoberturaCoverage-Good'
 BAD_REGION_NAME = 'CoberturaCoverage-Bad'
 FILL = sublime.DRAW_NO_FILL
 settings = None
+
+SOURCE_FILES, SOURCE_REPORT_MAPPING, REPORT_MTIMES = {}, {}, {}
 
 FILES = {}
 
@@ -19,36 +22,34 @@ def plugin_loaded():
     settings = sublime.load_settings('CoberturaCoverage.sublime-settings')
 
 
-class BaseCoverage(TextCommand):
-    def get_region_name(self, present=False):
-        return GOOD_REGION_NAME if present else BAD_REGION_NAME
+class BaseCoverage(object):
+    def remove_regions(self, view):
+        view.erase_regions(BAD_REGION_NAME)
 
-    def remove_regions(self, view, present=False):
-        region = self.get_region_name(present=present)
-        view.erase_regions(region)
-
-
-class RemoveCoverageReportCommand(BaseCoverage):
-    def run(self, edit):
-        self.remove_regions(self.view, present=False)
-        self.remove_regions(self.view, present=True)
-
-
-class LoadCoverageReportCommand(BaseCoverage):
-    def run(self, edit):
-        files = parse_files(settings.get('coverage_report_locations'))
-        file_name = self.view.file_name()
+    def trim_file_name(self, file_name):
         for loc in settings.get('strip_locations', []):
             if file_name.startswith(loc):
                 file_name = file_name.replace(loc, '')
                 break
+        return file_name
 
+    def render_coverage(self, view):
+        file_name = view.file_name()
+        if not file_name:
+            return
+
+        global SOURCE_FILES, SOURCE_REPORT_MAPPING, REPORT_MTIMES
+
+        reload(parse_reports)
+        files = parse_reports.parse_reports(settings.get('coverage_report_locations'), SOURCE_FILES,
+                                            SOURCE_REPORT_MAPPING, REPORT_MTIMES)
+        file_name = self.trim_file_name(file_name)
         file_data = files.get(file_name)
+
         if file_data:
             covered, uncovered = self.filter_lines(file_data['lines'])
-            self.remove_regions(self.view, present=False)
-            self.remove_regions(self.view, present=True)
-            self.highlight_lines(self.view, uncovered, present=False)
+            self.remove_regions(view)
+            self.highlight_lines(view, uncovered)
 
     def filter_lines(self, lines):
         covered, uncovered = [], []
@@ -62,9 +63,24 @@ class LoadCoverageReportCommand(BaseCoverage):
                 uncovered.append(k)
         return covered, uncovered
 
-    def highlight_lines(self, view, _lines, present=False):
-        region = self.get_region_name(present=present)
+    def highlight_lines(self, view, _lines):
+        region = BAD_REGION_NAME
         lines = [view.line(view.text_point(line_num - 1, 0)) for line_num in _lines]
-        self.remove_regions(view, present=present)
+        self.remove_regions(view)
         if lines:
-            view.add_regions(region, lines, "markup" if present else "invalid", '', FILL)
+            view.add_regions(region, lines, "invalid", '', FILL)
+
+
+class ToggleCoverageReportCommand(BaseCoverage, TextCommand):
+    def run(self, edit):
+        settings.set('coverage_on_load', not settings.get('coverage_on_load'))
+        if settings.get('coverage_on_load'):
+            self.render_coverage(self.view)
+        else:
+            self.remove_regions(self.view)
+
+
+class CoverageReportEventListener(BaseCoverage, EventListener):
+    def on_load_async(self, view):
+        if settings.get('coverage_on_load'):
+            self.render_coverage(view)
