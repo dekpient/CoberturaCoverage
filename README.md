@@ -25,4 +25,10 @@ Through [Package Control](https://sublime.wbond.net/packages/Package%20Control) 
 
  ## Usage
 
- The default command for toggling CoberturaCover is `ctrl+shift+n` on Mac
+ There is not default command for toggling CoberturaCoverage. Set you own like this:
+ ```
+ [
+   { "keys": ["ctrl+shift+n"], "command": "toggle_coverage_report" }
+ ]
+ ```
+
