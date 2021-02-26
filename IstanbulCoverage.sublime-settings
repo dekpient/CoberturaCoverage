@@ -1,0 +1,10 @@
+{
+  // Do you want to display this on load?
+  "coverage_on_load": false,
+  // Default local path to the report JSON file in your project
+  "coverage_local_path": "coverage/coverage-final.json",
+  // Default scope name for uncovered functions and statements
+  "uncovered_scope_name": "invalid.illegal",
+  // Default scope name for uncovered branches
+  "missing_branch_scope_name": "invalid.unimplemented",
+}

@@ -1,34 +1,47 @@
-# CoberturaCoverage
+# Sublime Istanbul Coverage
 
-This is a [Sublime Text](http://www.sublimetext.com) plugin that makes displaying lines of code not covered by a test using Cobertura reports.
+This is a [Sublime Text](http://www.sublimetext.com) plugin that highlights sections of code not covered by tests from Istanbul's JSON report.
+
+## Requirements
+
+* Only works in a Git project. Easy if all your projects put generated coverage reports in same location.
 
 ## Features
 
-* Syntax highlighting
-* Including multiple files
-* Stripping file name parts to match the path your tests run in
+* Precise highlights of missing branches, functions and statements
+* Show a tooltip popup and set status bar message on hover
+* Allow changing scope name for customizable highlight colors
 
 ## Install
 
-Through [Package Control](https://sublime.wbond.net/packages/Package%20Control) (recommended):
+_TODO:_ Through [Package Control](https://sublime.wbond.net/packages/Package%20Control):
 
-`Command Palette` > `Package Control: Install Package` > `CoberturaCoverage`
+`Command Palette` > `Package Control: Install Package` > `IstanbulCoverage`
+
+Or manually clone the repo:
+
+```sh
+cd "~/Library/Application Support/Sublime Text 3/Packages"
+git clone --depth 1 https://github.com/dekpient/sublime-istanbul-coverage.git IstanbulCoverage
+```
 
 ## Configuration
 
-`Preferences` > `CoberturaCoverage` > `Settings – User`
+`Preferences` > `IstanbulCoverage` > `Settings – User`
 
 * `coverage_on_load` - Display coverage on load, defaults to False
-* `coverage_report_locations` - This is a fully qualified path to your report .xml files
-* `strip_locations` - A list of locations which to remove from the beginning of a coverage report's filename. An example is:
- * I run my coverage reports in /home/jeffrand/tested_code, which may not show up in the coverage report's file names, but will be in my path as its opened in sublime, so I want to strip that location from the file's name
+* `coverage_local_path` - This is a local path from the root of your Git project to your report .json file, defaults to `coverage/coverage-final.json`
+* `uncovered_scope_name` - Defaults to `invalid.illegal`
+* `missing_branch_scope_name` - Defaults to `invalid.unimplemented`
 
- ## Usage
+## Usage
 
- There is not default command for toggling CoberturaCoverage. Set you own like this:
- ```
- [
-   { "keys": ["ctrl+shift+n"], "command": "toggle_coverage_report" }
- ]
- ```
+`Command Palette` > `Toggle Coverage Report`
 
+Or add your own key binding in `Preferences` > `Key Bindings` e.g.
+
+```json
+[
+  { "keys": ["super+t", "super+c"], "command": "toggle_coverage_report" }
+]
+```

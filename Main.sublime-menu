@@ -12,69 +12,17 @@
         "children":
         [
           {
-            "caption": "CoberturaCoverage",
+            "caption": "Istanbul Coverage",
             "children":
             [
               {
-                "caption": "Settings – Default",
-                "command": "open_file",
-                "args": {"file": "${packages}/CoberturaCoverage/CoberturaCoverage.sublime-settings"}
-              },
-              {
-                "caption": "Settings – User",
-                "command": "open_file",
-                "args": {"file": "${packages}/User/CoberturaCoverage.sublime-settings"}
-              },
-              { "caption": "-" },
-              {
-                "caption": "Key Bindings – Default",
-                "command": "open_file",
+                "command": "edit_settings",
                 "args": {
-                  "file": "${packages}/CoberturaCoverage/Default (OSX).sublime-keymap",
-                  "platform": "OSX"
-                }
-              },
-              {
-                "caption": "Key Bindings – Default",
-                "command": "open_file",
-                "args": {
-                  "file": "${packages}/CoberturaCoverage/Default (Linux).sublime-keymap",
-                  "platform": "Linux"
-                }
-              },
-              {
-                "caption": "Key Bindings – Default",
-                "command": "open_file",
-                "args": {
-                  "file": "${packages}/CoberturaCoverage/Default (Windows).sublime-keymap",
-                  "platform": "Windows"
-                }
-              },
-              {
-                "caption": "Key Bindings – User",
-                "command": "open_file",
-                "args": {
-                  "file": "${packages}/User/Default (OSX).sublime-keymap",
-                  "platform": "OSX"
-                }
-              },
-              {
-                "caption": "Key Bindings – User",
-                "command": "open_file",
-                "args": {
-                  "file": "${packages}/User/Default (Linux).sublime-keymap",
-                  "platform": "Linux"
-                }
-              },
-              {
-                "caption": "Key Bindings – User",
-                "command": "open_file",
-                "args": {
-                  "file": "${packages}/User/Default (Windows).sublime-keymap",
-                  "platform": "Windows"
-                }
-              },
-              { "caption": "-" }
+                  "base_file": "${packages}/IstanbulCoverage/IstanbulCoverage.sublime-settings",
+                  "default": "// Settings in here override those in \"IstanbulCoverage/IstanbulCoverage.sublime-settings\",\n// and are overridden in turn by syntax-specific settings.\n{\n\t$0\n}\n"
+                },
+                "caption": "Settings – User"
+              }
             ]
           }
         ]
