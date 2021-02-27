@@ -25,6 +25,27 @@ BRANCH_DESCRIPTIONS = {
     'switch': 'Switch statement',
 }
 
+LIST_POPUP = """
+<style>
+body {
+    margin: 0px;
+}
+div {
+    border: 1px;
+    padding-right: 30px;
+    border-style: solid;
+    border-color: #FFA500FF;
+}
+</style>
+<body>
+<div>
+<ul>
+%s
+</ul>
+</div>
+</body>
+"""
+
 settings = None
 
 # branch_type => regions
@@ -102,11 +123,12 @@ class CoverageReportEventListener(BaseCoverage, EventListener):
         return any(region.contains(point) for region in regions)
 
     def get_uncovered_point_desc(self, point, file_name, regions_map):
-        if file_name in regions_map:
-            regions_data = regions_map[file_name]
-            for key, regions in regions_data.items():
-                if self.is_point_in_regions(point, regions):
-                    return key
+        if file_name not in regions_map:
+            return
+        regions_data = regions_map[file_name]
+        for key, regions in regions_data.items():
+            if self.is_point_in_regions(point, regions):
+                return key
         return None
 
     def on_hover(self, view, point, hover_zone):
@@ -133,7 +155,7 @@ class CoverageReportEventListener(BaseCoverage, EventListener):
 
         if found:
             view.show_popup(
-                "<ul>" + ''.join(coverage_summary) + "</ul>",
+                LIST_POPUP % ''.join(coverage_summary),
                 flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
                 location=point,
                 max_height=300,
