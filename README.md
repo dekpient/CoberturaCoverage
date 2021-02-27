@@ -2,15 +2,13 @@
 
 This is a [Sublime Text](http://www.sublimetext.com) plugin that highlights sections of code not covered by tests from Istanbul's JSON report.
 
-## Requirements
-
-* Only works in a Git project. Easy if all your projects put generated coverage reports in same location.
-
 ## Features
 
 * Precise highlights of missing branches, functions and statements
 * Show a tooltip popup and set status bar message on hover
 * Allow changing scope name for customizable highlight colors
+* Works well in a Git project. Easy if all your projects put generated coverage reports in same location.
+  * If it's not a Git project, it inspects the first folder in the window.
 
 ## Install
 
