@@ -136,24 +136,20 @@ class CoverageReportEventListener(BaseCoverage, EventListener):
             return
 
         file_name = view.file_name()
-        found = False
         coverage_summary = []
 
         missed_branch_type = self.get_uncovered_point_desc(point, file_name, FILE_TO_BRANCH_REGIONS)
         if missed_branch_type:
             coverage_summary.append('<li>Branch not covered (%s)</li>' % BRANCH_DESCRIPTIONS[missed_branch_type])
-            found = True
 
         missed_func_name = self.get_uncovered_point_desc(point, file_name, FILE_TO_FUNC_REGIONS)
         if missed_func_name:
             coverage_summary.append('<li>Function "%s" not covered</li>' % missed_func_name)
-            found = True
 
         if file_name in FILE_TO_STMT_REGIONS and self.is_point_in_regions(point, FILE_TO_STMT_REGIONS[file_name]):
             coverage_summary.append('<li>Statement not covered</li>')
-            found = True
 
-        if found:
+        if coverage_summary:
             view.show_popup(
                 LIST_POPUP % ''.join(coverage_summary),
                 flags=sublime.HIDE_ON_MOUSE_MOVE_AWAY,
