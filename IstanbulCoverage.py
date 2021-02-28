@@ -69,11 +69,11 @@ class BaseCoverage(git_mixin.GitMixin):
             return
 
         git_repo = self.determine_git_repo(file_name)
-        first_folder = view.window().folders()[0]
-        root_dir = git_repo or first_folder
-        if not root_dir:
+        folders = view.window().folders()
+        if not git_repo and len(folders) <= 0:
             return
 
+        root_dir = git_repo or folders[0]
         report_path = os.path.join(root_dir, settings.get('coverage_local_path'))
         if not os.path.exists(report_path):
             sublime.status_message('No coverage report')
